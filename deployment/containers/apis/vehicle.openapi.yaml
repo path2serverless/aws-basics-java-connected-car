@@ -1,0 +1,87 @@
+openapi: "3.0.1"
+info:
+  title: "ConnectedCar_Vehicle_API"
+  version: "1.0"
+paths:
+  /vehicle/events:
+    post: # create event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event' 
+      security:
+      - VehicleAuthorizer: []
+      x-amazon-apigateway-integration:
+        type: "http_proxy"
+        connectionType: "VPC_LINK"
+        connectionId: 
+          Fn::Sub: ${VPCLink}
+        httpMethod: "POST"
+        uri: 
+          Fn::Sub: http://${NetworkLoadBalancerDns}/vehicle/events
+        passthroughBehavior: "when_no_match"
+    get: # get events
+      responses:
+        '200':
+          description: A list of events
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Events'
+      security:
+      - VehicleAuthorizer: []
+      x-amazon-apigateway-integration:
+        type: "http_proxy"
+        connectionType: "VPC_LINK"
+        connectionId: 
+          Fn::Sub: ${VPCLink}
+        httpMethod: "GET"
+        uri: 
+          Fn::Sub: http://${NetworkLoadBalancerDns}/vehicle/events
+        passthroughBehavior: "when_no_match"
+  /vehicle/events/{timestamp}:
+    get: # get event
+      parameters:
+      - name: "timestamp"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        '200':
+          description: An individual event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+      security:
+      - VehicleAuthorizer: []
+      x-amazon-apigateway-integration:
+        type: "http_proxy"
+        connectionType: "VPC_LINK"
+        connectionId: 
+          Fn::Sub: ${VPCLink}
+        httpMethod: "GET"
+        requestParameters:
+          integration.request.path.timestamp: "method.request.path.timestamp"
+        uri: 
+          Fn::Sub: http://${NetworkLoadBalancerDns}/vehicle/events/{timestamp}
+        passthroughBehavior: "when_no_match"
+components:
+  securitySchemes:
+    VehicleAuthorizer:
+      type: "apiKey"
+      name: "Authorization"
+      in: "header"
+      x-amazon-apigateway-authtype: "custom"
+      x-amazon-apigateway-authorizer:
+        authorizerUri: 
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${VehicleAuthorizerFunction.Arn}:${StageName}/invocations
+        authorizerResultTtlInSeconds: 300
+        identitySource: "method.request.header.X-Vin, method.request.header.X-Pin"
+        type: "request"
+        authorizerCredentials: 
+          Fn::Sub: ${LambdaInvocationRole}
+

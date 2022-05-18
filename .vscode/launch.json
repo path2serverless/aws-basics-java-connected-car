@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Grizzly",
+            "request": "launch",
+            "mainClass": "com.path2serverless.connectedcar.apis.GrizzlyLauncher",
+            "projectName": "apis"
+        },
+        {
+            "type": "java",
+            "name": "Launch Tools",
+            "request": "launch",
+            "mainClass": "com.path2serverless.connectedcar.tools.Tools",
+            "projectName": "tools"
+        }
+    ]
+}

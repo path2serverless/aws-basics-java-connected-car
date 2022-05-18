@@ -1,0 +1,281 @@
+openapi: "3.0.1"
+info:
+  title: "ConnectedCar_Customer_API"
+  version: "1.0"
+paths:
+  /customer/profile:
+    patch: # update customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerPatch' 
+      security:
+      - CognitoAuthorizer:
+        - aws.cognito.signin.user.admin
+        - openid
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: 
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${UpdateCustomer.Arn}:${StageName}/invocations
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+        credentials: 
+          Fn::Sub: ${LambdaInvocationRole}
+    get: # get customer
+      responses:
+        '200':
+          description: An individual customer by auth username
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+      security:
+      - CognitoAuthorizer:
+        - aws.cognito.signin.user.admin
+        - openid
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: 
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetCustomer.Arn}:${StageName}/invocations
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+        credentials: 
+          Fn::Sub: ${LambdaInvocationRole}
+  /customer/appointments:
+    post: # create appointment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Appointment' 
+      security:
+      - CognitoAuthorizer:
+        - aws.cognito.signin.user.admin
+        - openid
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: 
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateAppointment.Arn}:${StageName}/invocations
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+        credentials: 
+          Fn::Sub: ${LambdaInvocationRole}
+  /customer/appointments/{appointmentId}:
+    delete: # delete appointment
+      parameters:
+      - name: "appointmentId"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      security:
+      - CognitoAuthorizer:
+        - aws.cognito.signin.user.admin
+        - openid
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: 
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteAppointment.Arn}:${StageName}/invocations
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+        credentials: 
+          Fn::Sub: ${LambdaInvocationRole}
+    get: # get appointment
+      parameters:
+      - name: "appointmentId"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        '200':
+          description: An individual appointment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+      security:
+      - CognitoAuthorizer:
+        - aws.cognito.signin.user.admin
+        - openid
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: 
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetAppointment.Arn}:${StageName}/invocations
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+        credentials: 
+          Fn::Sub: ${LambdaInvocationRole}
+  /customer/registrations:
+    get: # get registrations
+      responses:
+        '200':
+          description: A list of registrations for a customer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Registrations'
+      security:
+      - CognitoAuthorizer:
+        - aws.cognito.signin.user.admin
+        - openid
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: 
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetRegistrations.Arn}:${StageName}/invocations
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+        credentials: 
+          Fn::Sub: ${LambdaInvocationRole}
+  /customer/registrations/{vin}/appointments:
+    get: # get appointments
+      parameters:
+      - name: "vin"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        '200':
+          description: A list of appointments by vehicle vin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointments'
+      security:
+      - CognitoAuthorizer:
+        - aws.cognito.signin.user.admin
+        - openid
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: 
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetAppointments.Arn}:${StageName}/invocations
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+        credentials: 
+          Fn::Sub: ${LambdaInvocationRole}
+  /customer/vehicles/{vin}:
+    get: # get vehicles
+      parameters:
+      - name: "vin"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        '200':
+          description: An individual vehicle by vin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+      security:
+      - CognitoAuthorizer:
+        - aws.cognito.signin.user.admin
+        - openid
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: 
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetVehicle.Arn}:${StageName}/invocations
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+        credentials: 
+          Fn::Sub: ${LambdaInvocationRole}
+  /customer/vehicles/{vin}/events:
+    get: # get events
+      parameters:
+      - name: "vin"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        '200':
+          description: A list of events for a vehicle vin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Events'
+      security:
+      - CognitoAuthorizer:
+        - aws.cognito.signin.user.admin
+        - openid
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: 
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetEvents.Arn}:${StageName}/invocations
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+        credentials: 
+          Fn::Sub: ${LambdaInvocationRole}
+  /customer/dealers:
+    get: # get dealers
+      parameters:
+      - name: "stateCode"
+        in: "query"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        '200':
+          description: A list of dealers by stateCode
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dealers'
+      security:
+      - CognitoAuthorizer:
+        - aws.cognito.signin.user.admin
+        - openid
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: 
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetDealers.Arn}:${StageName}/invocations
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+        credentials: 
+          Fn::Sub: ${LambdaInvocationRole}
+  /customer/dealers/{dealerId}/timeslots:
+    get: # get timeslots
+      parameters:
+      - name: "dealerId"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        '200':
+          description: A list of timeslots for a dealer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Timeslots'
+      security:
+      - CognitoAuthorizer:
+        - aws.cognito.signin.user.admin
+        - openid
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: 
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetTimeslots.Arn}:${StageName}/invocations
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+        credentials: 
+          Fn::Sub: ${LambdaInvocationRole}
+components:
+  securitySchemes:
+    CognitoAuthorizer:
+      type: "apiKey"
+      name: "Authorization"
+      in: "header"
+      scopes:
+      - aws.cognito.signin.user.admin
+      - openid
+      x-amazon-apigateway-authtype: "cognito_user_pools"
+      x-amazon-apigateway-authorizer:
+        type: "cognito_user_pools"
+        providerARNs:
+        - Fn::Sub: ${UserPool}

@@ -1,0 +1,155 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: 'Master template that includes nested templates'
+Parameters:
+  BucketName:
+    Type: String
+    Description: 'Specifies the name of the S3 bucket from which code is deployed.'
+  ServiceName:
+    Type: String
+    Description: 'Specifies the name of the service e.g. ConnectedCar.'
+    Default: ConnectedCar
+  ServiceNameLower:
+    Type: String
+    Description: 'Specifies the name of the service e.g. ConnectedCar in lowercase.'
+    Default: connectedcar
+  EnvironmentName:
+    Type: String
+    Default: Dev
+    AllowedValues:
+      - Dev
+      - Test
+      - Prod
+    Description: 'Specifies the name of the environment (Dev,Test,Prod).'
+  EnvironmentNameLower:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - test
+      - prod
+    Description: 'Specifies the name of the environment (dev,test,prod) in lowercase.'
+  VersionNumber:
+    Type: String
+    Default: 1.0.0
+    Description: 'Specifies the version number of the deployed jar files.'
+  StageName:
+    Type: String
+    Default: api
+    Description: 'Specifies the stage name (Stage1,Stage2).'
+  UserPoolDomainName:
+    Type: String
+    Default: connectedcar
+    Description: 'Domain prefix for the Cognito user pool.'
+Resources:
+  NetworkStack:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: !Sub 'https://${BucketName}.s3.${AWS::Region}.amazonaws.com/${ServiceName}/${EnvironmentName}/network.yaml'
+      Parameters:
+        ServiceName: !Ref ServiceName
+        EnvironmentName: !Ref EnvironmentName
+  ServiceStack:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: !Sub 'https://${BucketName}.s3.${AWS::Region}.amazonaws.com/${ServiceName}/${EnvironmentName}/services.yaml'
+      Parameters:
+        ServiceName: !Ref ServiceName
+        EnvironmentName: !Ref EnvironmentName
+        UserPoolDomainName: !Ref UserPoolDomainName
+  ContainerStack:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: !Sub 'https://${BucketName}.s3.${AWS::Region}.amazonaws.com/${ServiceName}/${EnvironmentName}/containers.yaml'
+      Parameters:
+        ServiceName: !Ref ServiceName
+        ServiceNameLower: !Ref ServiceNameLower
+        EnvironmentName: !Ref EnvironmentName
+        EnvironmentNameLower: !Ref EnvironmentNameLower
+        SubnetContainersA: !GetAtt
+          - NetworkStack
+          - Outputs.SubnetContainersA
+        SubnetContainersB: !GetAtt
+          - NetworkStack
+          - Outputs.SubnetContainersB
+        ContainerSecurityGroup: !GetAtt
+          - NetworkStack
+          - Outputs.ContainerSecurityGroup
+        NetworkLoadBalancerTargetGroup: !GetAtt
+          - NetworkStack
+          - Outputs.NetworkLoadBalancerTargetGroup
+        ContainerExecutionRole: !GetAtt
+          - ServiceStack
+          - Outputs.ContainerExecutionRole
+        UserQueueUrn: !GetAtt
+          - ServiceStack
+          - Outputs.UserQueueUrn
+    DependsOn:
+      - NetworkStack
+      - ServiceStack
+  ApiStack:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: !Sub 'https://${BucketName}.s3.${AWS::Region}.amazonaws.com/${ServiceName}/${EnvironmentName}/apis.yaml'
+      Parameters:
+        BucketName: !Ref BucketName
+        ServiceName: !Ref ServiceName
+        EnvironmentName: !Ref EnvironmentName
+        VersionNumber: !Ref VersionNumber
+        StageName: !Ref StageName
+        NetworkLoadBalancerDns: !GetAtt
+          - NetworkStack
+          - Outputs.NetworkLoadBalancerDns
+        VPCLink: !GetAtt
+          - NetworkStack
+          - Outputs.VPCLink
+        LambdaExecutionRole: !GetAtt 
+          - ServiceStack
+          - Outputs.LambdaExecutionRole
+        LambdaInvocationRole: !GetAtt 
+          - ServiceStack
+          - Outputs.LambdaInvocationRole
+        UserPool: !GetAtt 
+          - ServiceStack
+          - Outputs.UserPool
+        UserPoolId: !GetAtt 
+          - ServiceStack
+          - Outputs.UserPoolId
+        UserQueue: !GetAtt 
+          - ServiceStack
+          - Outputs.UserQueue
+    DependsOn:
+      - NetworkStack
+      - ServiceStack
+Outputs:
+  UserPoolDomainName:
+    Description: 'The Cognito User Pool domain prefix'
+    Value: !Ref UserPoolDomainName
+  UserPoolId:
+    Description: 'The Cognito User Pool ID'
+    Value: !GetAtt 
+      - ServiceStack
+      - Outputs.UserPoolId
+  UserClientId:
+    Description: 'The Cognito App Client ID'
+    Value: !GetAtt 
+      - ServiceStack
+      - Outputs.UserClientId
+  AdminAPI:
+    Description: 'The Admin API ID'
+    Value: !GetAtt 
+      - ApiStack
+      - Outputs.AdminAPI
+  CustomerAPI:
+    Description: 'The Customer API ID'
+    Value: !GetAtt 
+      - ApiStack
+      - Outputs.CustomerAPI
+  VehicleAPI:
+    Description: 'The Vehicle API ID'
+    Value: !GetAtt 
+      - ApiStack
+      - Outputs.VehicleAPI
+
+
+
+

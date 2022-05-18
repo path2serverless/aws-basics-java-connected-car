@@ -1,0 +1,566 @@
+{
+	"info": {
+		"_postman_id": "4b0c7107-8f3f-440b-8361-b51ab25e0cd1",
+		"name": "Customer_API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Dealers",
+			"item": [
+				{
+					"name": "Get Dealers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () { ",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const json = pm.response.json();",
+									"const items = json.length;",
+									"",
+									"if (items > 0) {",
+									"  pm.globals.set('dealerId', json[0].dealerId);",
+									"}",
+									"",
+									"pm.test(\"Number of items is non-zero\", function () {",
+									"    pm.expect(items).to.be.above(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{customerApi}}.execute-api.{{region}}.amazonaws.com/{{stage}}/customer/dealers?stateCode=OR",
+							"protocol": "https",
+							"host": [
+								"{{customerApi}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"{{stage}}",
+								"customer",
+								"dealers"
+							],
+							"query": [
+								{
+									"key": "stateCode",
+									"value": "OR"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Timeslots",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () { ",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const json = pm.response.json();",
+									"const items = json.length;",
+									"",
+									"pm.test(\"Number of items is non-zero\", function () {",
+									"    pm.expect(items).to.be.above(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{customerApi}}.execute-api.{{region}}.amazonaws.com/{{stage}}/customer/dealers/{{dealerId}}/timeslots",
+							"protocol": "https",
+							"host": [
+								"{{customerApi}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"{{stage}}",
+								"customer",
+								"dealers",
+								"{{dealerId}}",
+								"timeslots"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "Update Customer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () { ",
+									"  pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{username}}\",\n    \"phoneNumber\": \"123-456-7890\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{customerApi}}.execute-api.{{region}}.amazonaws.com/{{stage}}/customer/profile",
+							"protocol": "https",
+							"host": [
+								"{{customerApi}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"{{stage}}",
+								"customer",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () { ",
+									"  pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{customerApi}}.execute-api.{{region}}.amazonaws.com/{{stage}}/customer/profile",
+							"protocol": "https",
+							"host": [
+								"{{customerApi}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"{{stage}}",
+								"customer",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Registrations",
+			"item": [
+				{
+					"name": "Get Registrations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () { ",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const json = pm.response.json();",
+									"const items = json.length;",
+									"",
+									"pm.test(\"Number of items is non-zero\", function () {",
+									"    pm.expect(items).to.be.above(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{customerApi}}.execute-api.{{region}}.amazonaws.com/{{stage}}/customer/registrations",
+							"protocol": "https",
+							"host": [
+								"{{customerApi}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"{{stage}}",
+								"customer",
+								"registrations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vehicles",
+			"item": [
+				{
+					"name": "Get Vehicle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () { ",
+									"  pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{customerApi}}.execute-api.{{region}}.amazonaws.com/{{stage}}/customer/vehicles/{{vin1}}",
+							"protocol": "https",
+							"host": [
+								"{{customerApi}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"{{stage}}",
+								"customer",
+								"vehicles",
+								"{{vin1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Events",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () { ",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const json = pm.response.json();",
+									"const items = json.length;",
+									"",
+									"pm.test(\"Number of items is non-zero\", function () {",
+									"    pm.expect(items).to.be.above(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{customerApi}}.execute-api.{{region}}.amazonaws.com/{{stage}}/customer/vehicles/{{vin1}}/events",
+							"protocol": "https",
+							"host": [
+								"{{customerApi}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"{{stage}}",
+								"customer",
+								"vehicles",
+								"{{vin1}}",
+								"events"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Appointments",
+			"item": [
+				{
+					"name": "Create Appointment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () { ",
+									"  pm.response.to.have.status(201);",
+									"});",
+									"",
+									"const elements = pm.response.headers.get('location').split('/');",
+									"",
+									"pm.globals.set('appointmentId', elements[elements.length-1]);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"timeslotKey\": {\n        \"dealerId\": \"{{dealerId}}\",\n        \"serviceDateHour\": \"{{serviceDateHour}}\"\n    },\n    \"registrationKey\": {\n        \"username\": \"{{username}}\",\n        \"vin\": \"{{vin1}}\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{customerApi}}.execute-api.{{region}}.amazonaws.com/{{stage}}/customer/appointments",
+							"protocol": "https",
+							"host": [
+								"{{customerApi}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"{{stage}}",
+								"customer",
+								"appointments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Appointments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () { ",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const json = pm.response.json();",
+									"const items = json.length;",
+									"",
+									"pm.test(\"Number of items is non-zero\", function () {",
+									"    pm.expect(items).to.be.above(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{customerApi}}.execute-api.{{region}}.amazonaws.com/{{stage}}/customer/registrations/{{vin1}}/appointments",
+							"protocol": "https",
+							"host": [
+								"{{customerApi}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"{{stage}}",
+								"customer",
+								"registrations",
+								"{{vin1}}",
+								"appointments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Appointment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () { ",
+									"  pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{customerApi}}.execute-api.{{region}}.amazonaws.com/{{stage}}/customer/appointments/{{appointmentId}}",
+							"protocol": "https",
+							"host": [
+								"{{customerApi}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"{{stage}}",
+								"customer",
+								"appointments",
+								"{{appointmentId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Appointment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () { ",
+									"  pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://{{customerApi}}.execute-api.{{region}}.amazonaws.com/{{stage}}/customer/appointments/{{appointmentId}}",
+							"protocol": "https",
+							"host": [
+								"{{customerApi}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"{{stage}}",
+								"customer",
+								"appointments",
+								"{{appointmentId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"if (pm.variables.has(\"running\") == false) {",
+					"    const moment = require('moment');",
+					"    const startDate = moment().format(\"YYYY-MM-DD\");",
+					"",
+					"    pm.globals.set(\"serviceDateHour\", startDate + \"-08\");",
+					"    pm.variables.set(\"running\",\"true\");",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

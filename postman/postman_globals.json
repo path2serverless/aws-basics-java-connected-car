@@ -1,0 +1,99 @@
+{
+	"id": "e53616c9-92c1-40d8-85b6-9b6318fe90bb",
+	"values": [
+		{
+			"key": "region",
+			"value": "ca-central-1",
+			"enabled": true
+		},
+		{
+			"key": "stage",
+			"value": "api",
+			"enabled": true
+		},
+		{
+			"key": "adminApi",
+			"value": "wky4y96fsb",
+			"enabled": true
+		},
+		{
+			"key": "vehicleApi",
+			"value": "j9ftosu93h",
+			"enabled": true
+		},
+		{
+			"key": "customerApi",
+			"value": "689o8now68",
+			"enabled": true
+		},
+		{
+			"key": "apiKey",
+			"value": "0Ykr2OIleD8kU9fZL0S7NBtJHD6akZI9w3qQs6c2",
+			"enabled": true
+		},
+		{
+			"key": "token",
+			"value": "token",
+			"enabled": true
+		},
+		{
+			"key": "dealerId",
+			"value": "0cfd531e-fabd-45f0-ac62-5e9ecc666738",
+			"enabled": true
+		},
+		{
+			"key": "appointmentId",
+			"value": "bdf5d9ca-1fca-45d4-b8ab-4fa5eb604e77",
+			"enabled": true
+		},
+		{
+			"key": "startDate",
+			"value": "2021-12-30",
+			"enabled": true
+		},
+		{
+			"key": "endDate",
+			"value": "2021-12-31",
+			"enabled": true
+		},
+		{
+			"key": "serviceDateHour",
+			"value": "2021-12-30-08",
+			"enabled": true
+		},
+		{
+			"key": "username",
+			"value": "USER",
+			"enabled": true
+		},
+		{
+			"key": "vin1",
+			"value": "VIN1",
+			"enabled": true
+		},
+		{
+			"key": "vin2",
+			"value": "VIN2",
+			"enabled": true
+		},
+		{
+			"key": "vehiclePin",
+			"value": "123456",
+			"enabled": true
+		},
+		{
+			"key": "timestamp",
+			"value": "1234567890",
+			"enabled": true
+		},
+		{
+			"key": "pipeline",
+			"value": "false",
+			"enabled": true
+		}
+	],
+	"name": "Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2022-01-07T19:36:49.546Z",
+	"_postman_exported_using": "Postman/9.7.1"
+}

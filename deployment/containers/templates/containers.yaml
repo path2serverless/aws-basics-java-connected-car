@@ -1,0 +1,200 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: 'CloudFormation template for ECS resources.'
+Parameters:
+  ServiceName:
+    Type: String
+    Description: 'Specifies the name of the service e.g. ConnectedCar.'
+    Default: ConnectedCar
+  ServiceNameLower:
+    Type: String
+    Description: 'Specifies the name of the service e.g. ConnectedCar in lowercase.'
+    Default: connectedcar
+  EnvironmentName:
+    Type: String
+    Default: Dev
+    AllowedValues:
+      - Dev
+      - Test
+      - Prod
+    Description: 'Specifies the name of the environment (Dev,Test,Prod).'
+  EnvironmentNameLower:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - test
+      - prod
+    Description: 'Specifies the name of the environment (dev,test,prod) in lowercase.'
+  SubnetContainersA:
+    Type: String
+    Description: 'Specifies the ID of the subnet for AZ A in which containers are deployed'
+  SubnetContainersB:
+    Type: String
+    Description: 'Specifies the ID of the subnet for AZ B in which containers are deployed'
+  ContainerSecurityGroup:
+    Type: String
+    Description: 'Specifies the ID of the security groups attached to the container ENIs'
+  NetworkLoadBalancerTargetGroup:
+    Type: String
+    Description: 'Specifies the ARN of the Network Load Balancer Target Group used by the ECS service'
+  ContainerExecutionRole:
+    Type: String
+    Description: 'Specifies the ARN of the container execution role.'
+  UserQueueUrn:
+    Type: String
+    Description: 'Specifies the URN for the SQS user queue'
+Resources:
+  ECSTaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: [ecs-tasks.amazonaws.com]
+          Action: ['sts:AssumeRole']
+      Path: /
+      RoleName: !Sub '${ServiceName}TaskExecutionRole${EnvironmentName}'
+      Policies:
+        - PolicyName: AmazonECSTaskExecutionRolePolicy
+          PolicyDocument:
+            Statement:
+            - Effect: Allow
+              Action:
+                - 'ecr:GetAuthorizationToken'
+                - 'ecr:BatchCheckLayerAvailability'
+                - 'ecr:GetDownloadUrlForLayer'
+                - 'ecr:BatchGetImage'
+                - 'logs:CreateLogStream'
+                - 'logs:PutLogEvents'
+              Resource: '*'
+  ServiceAutoScaleRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: [application-autoscaling.amazonaws.com]
+          Action: ['sts:AssumeRole']
+      Path: /
+      RoleName: !Sub '${ServiceName}ServiceAutoScaleRole${EnvironmentName}'
+      Policies:
+      - PolicyName: ecs-service
+        PolicyDocument:
+          Statement:
+          - Effect: Allow
+            Action: ['ecs:DescribeServices', 'ecs:UpdateService', 'cloudwatch:DescribeAlarms']
+            Resource: '*'
+  CloudWatchLogsGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '${ServiceName}_ContainerLogs_${EnvironmentName}'
+      RetentionInDays: 14
+  ECSCluster:
+    Type: 'AWS::ECS::Cluster'
+    Properties:
+      ClusterName: !Sub '${ServiceName}_Cluster_${EnvironmentName}'
+      ClusterSettings:
+        - Name: containerInsights
+          Value: enabled        
+  ECSTaskDefinition:
+    Type: 'AWS::ECS::TaskDefinition'
+    Properties:
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      Cpu: '2048'
+      Memory: '4096'
+      ExecutionRoleArn: !Ref ECSTaskExecutionRole
+      Family: !Sub '${ServiceName}_TaskDefinition_${EnvironmentName}'
+      ContainerDefinitions:
+        - Essential: true
+          Image: !Sub '${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ServiceNameLower}-${EnvironmentNameLower}:latest'
+          Name: !Sub '${ServiceNameLower}-${EnvironmentNameLower}'
+          Environment:
+            - Name: DealerTableName
+              Value: !Sub '${ServiceName}_Dealer_${EnvironmentName}'
+            - Name: TimeslotTableName 
+              Value: !Sub '${ServiceName}_Timeslot_${EnvironmentName}'
+            - Name: AppointmentTableName
+              Value: !Sub '${ServiceName}_Appointment_${EnvironmentName}'
+            - Name: RegistrationTableName
+              Value: !Sub '${ServiceName}_Registration_${EnvironmentName}'
+            - Name: CustomerTableName
+              Value: !Sub '${ServiceName}_Customer_${EnvironmentName}'
+            - Name: VehicleTableName
+              Value: !Sub '${ServiceName}_Vehicle_${EnvironmentName}'
+            - Name: EventTableName 
+              Value: !Sub '${ServiceName}_Event_${EnvironmentName}'
+            - Name: UserQueueUrn
+              Value: !Ref UserQueueUrn
+          PortMappings:
+            - ContainerPort: 8080
+              Protocol: tcp
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref CloudWatchLogsGroup
+              awslogs-region: !Ref 'AWS::Region'
+              awslogs-stream-prefix: !Sub '${ServiceNameLower}-${EnvironmentNameLower}'
+      TaskRoleArn: !Ref ContainerExecutionRole
+      Tags: 
+        - Key: Name
+          Value: !Sub '${ServiceName}_TaskDefinition_${EnvironmentName}'
+    DependsOn: 
+      - ECSTaskExecutionRole
+      - CloudWatchLogsGroup
+  ECSService:
+    Type: 'AWS::ECS::Service'
+    Properties:
+      Cluster: !Ref ECSCluster
+      ServiceName: !Sub '${ServiceName}_Service_${EnvironmentName}'
+      DeploymentConfiguration:
+        MaximumPercent: 400
+        MinimumHealthyPercent: 100
+      DesiredCount: 2
+      HealthCheckGracePeriodSeconds: 60
+      LaunchType: FARGATE
+      LoadBalancers:
+        - ContainerName: !Sub '${ServiceNameLower}-${EnvironmentNameLower}'
+          ContainerPort: 8080
+          TargetGroupArn: !Ref NetworkLoadBalancerTargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - !Ref ContainerSecurityGroup
+          Subnets: 
+            - !Ref SubnetContainersA
+            - !Ref SubnetContainersB
+      TaskDefinition: !Ref ECSTaskDefinition
+  ServiceAutoScalingTarget:
+    Type: AWS::ApplicationAutoScaling::ScalableTarget
+    Properties:
+      MaxCapacity: 8
+      MinCapacity: 2
+      ResourceId:
+        Fn::Join:
+        - "/"
+        - - service
+          - !Ref ECSCluster
+          - !GetAtt [ECSService, Name]
+      RoleARN: !GetAtt ServiceAutoScaleRole.Arn
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
+  TargetTrackingCPUPolicy:
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+    Properties:
+      PolicyName: !Sub '${ServiceName}_ScalingPolicy_${EnvironmentName}'
+      PolicyType: TargetTrackingScaling
+      ScalingTargetId:
+        Ref: ServiceAutoScalingTarget
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
+      TargetTrackingScalingPolicyConfiguration:
+        TargetValue: 75.0
+        ScaleInCooldown: 60
+        ScaleOutCooldown: 60
+        PredefinedMetricSpecification:
+          PredefinedMetricType: ECSServiceAverageCPUUtilization

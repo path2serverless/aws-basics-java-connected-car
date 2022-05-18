@@ -1,0 +1,36 @@
+version: 0.2
+env:
+  exported-variables:
+    - VERSION_NUMBER
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+  pre_build:
+    commands:
+      - VERSION_NUMBER=$(date +"%Y%m%d-%H%M%S")
+      - ACCOUNT=$(echo $CODEBUILD_BUILD_ARN | cut -f5 -d ':')
+      - aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
+  build:
+    commands:
+      - docker build -t ${SERVICE_LOWER}-${ENVIRONMENT_LOWER} -f Dockerfile .
+      - docker tag ${SERVICE_LOWER}-${ENVIRONMENT_LOWER}\:latest ${ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${SERVICE_LOWER}-${ENVIRONMENT_LOWER}\:latest
+      - mvn install -q -f main/pom.xml
+  post_build:
+    commands:
+      - docker push ${ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${SERVICE_LOWER}-${ENVIRONMENT_LOWER}\:latest
+      - aws s3 rm --recursive s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}
+      - aws s3 cp main/authorizers/target/authorizers-SNAPSHOT-AUTHORIZERS.jar s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}/authorizers-${VERSION_NUMBER}.jar
+      - aws s3 cp main/events/target/events-SNAPSHOT-EVENTS.jar s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}/events-${VERSION_NUMBER}.jar
+      - cat deployment/containers/apis/admin.openapi.yaml deployment/containers/apis/schemas.openapi.yaml | aws s3 cp - s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}/admin.openapi.yaml
+      - cat deployment/containers/apis/vehicle.openapi.yaml deployment/containers/apis/schemas.openapi.yaml | aws s3 cp - s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}/vehicle.openapi.yaml
+      - cat deployment/containers/apis/customer.openapi.yaml deployment/containers/apis/schemas.openapi.yaml | aws s3 cp - s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}/customer.openapi.yaml
+      - aws s3 cp deployment/containers/templates/network.yaml s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}/network.yaml
+      - aws s3 cp deployment/containers/templates/services.yaml s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}/services.yaml
+      - aws s3 cp deployment/containers/templates/containers.yaml s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}/containers.yaml
+      - aws s3 cp deployment/containers/templates/apis.yaml s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}/apis.yaml
+      - aws s3 cp deployment/containers/templates/master.yaml s3://${BUCKET}/${SERVICE}/${ENVIRONMENT}/master.yaml
+
+
+
+

@@ -1,0 +1,44 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-install",
+      "osx": {
+        "command": "mvn",
+        "type": "shell",
+        "args": [
+            "package",
+            "-f",
+            "${workspaceFolder}/main/pom.xml"
+        ]
+      },
+      "group": "build"
+    },
+    {
+      "label": "build-test",
+      "osx": {
+        "command": "mvn",
+        "type": "shell",
+        "args": [
+            "test",
+            "-f",
+            "${workspaceFolder}/main/pom.xml"
+        ]
+      },
+      "group": "build"
+    },
+    {
+      "label": "build-scan",
+      "osx": {
+        "command": "mvn",
+        "type": "shell",
+        "args": [
+            "dependency-check:check",
+            "-f",
+            "${workspaceFolder}/main/pom.xml"
+        ]
+      },
+      "group": "build"
+    }
+  ]
+}

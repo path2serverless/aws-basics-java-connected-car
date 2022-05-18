@@ -1,0 +1,131 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: 'Master template that includes nested templates'
+Parameters:
+  BucketName:
+    Type: String
+    Description: 'Specifies the name of the S3 bucket from which code is deployed.'
+  ServiceName:
+    Type: String
+    Description: 'Specifies the name of the service e.g. ConnectedCar.'
+    Default: ConnectedCar
+  ServiceNameLower:
+    Type: String
+    Description: 'Specifies the name of the service e.g. ConnectedCar in lowercase.'
+    Default: connectedcar
+  EnvironmentName:
+    Type: String
+    Default: Dev
+    AllowedValues:
+      - Dev
+      - Test
+      - Prod
+    Description: 'Specifies the name of the environment (Dev,Test,Prod).'
+  EnvironmentNameLower:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - test
+      - prod
+    Description: 'Specifies the name of the environment (dev,test,prod) in lowercase.'
+  VersionNumber:
+    Type: String
+    Default: 1.0.0
+    Description: 'Specifies the version number of the deployed jar files.'
+  StageName:
+    Type: String
+    Default: api
+    Description: 'Specifies the stage name e.g. api.'
+  UserPoolDomainName:
+    Type: String
+    Default: connectedcar
+    Description: 'Domain prefix for the Cognito user pool.'
+Resources:
+  ServiceStack:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: !Sub 'https://${BucketName}.s3.${AWS::Region}.amazonaws.com/${ServiceName}/${EnvironmentName}/services.yaml'
+      Parameters:
+        ServiceName: !Ref ServiceName
+        EnvironmentName: !Ref EnvironmentName
+        UserPoolDomainName: !Ref UserPoolDomainName
+  AdminApiStack:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: !Sub 'https://${BucketName}.s3.${AWS::Region}.amazonaws.com/${ServiceName}/${EnvironmentName}/admin.yaml'
+      Parameters:
+        BucketName: !Ref BucketName
+        ServiceName: !Ref ServiceName
+        EnvironmentName: !Ref EnvironmentName
+        VersionNumber: !Ref VersionNumber
+        StageName: !Ref StageName
+        LambdaExecutionRole: !GetAtt 
+          - ServiceStack
+          - Outputs.LambdaExecutionRole
+        UserPoolId: !GetAtt 
+          - ServiceStack
+          - Outputs.UserPoolId
+    DependsOn:
+      - ServiceStack
+  CustomerApiStack:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: !Sub 'https://${BucketName}.s3.${AWS::Region}.amazonaws.com/${ServiceName}/${EnvironmentName}/customer.yaml'
+      Parameters:
+        BucketName: !Ref BucketName
+        ServiceName: !Ref ServiceName
+        EnvironmentName: !Ref EnvironmentName
+        VersionNumber: !Ref VersionNumber
+        StageName: !Ref StageName
+        LambdaExecutionRole: !GetAtt 
+          - ServiceStack
+          - Outputs.LambdaExecutionRole
+        UserPool: !GetAtt 
+          - ServiceStack
+          - Outputs.UserPool
+    DependsOn:
+      - ServiceStack
+  VehicleApiStack:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: !Sub 'https://${BucketName}.s3.${AWS::Region}.amazonaws.com/${ServiceName}/${EnvironmentName}/vehicle.yaml'
+      Parameters:
+        BucketName: !Ref BucketName
+        ServiceName: !Ref ServiceName
+        EnvironmentName: !Ref EnvironmentName
+        VersionNumber: !Ref VersionNumber
+        StageName: !Ref StageName
+        LambdaExecutionRole: !GetAtt 
+          - ServiceStack
+          - Outputs.LambdaExecutionRole
+    DependsOn:
+      - ServiceStack
+Outputs:
+  UserPoolDomainName:
+    Description: 'The Cognito User Pool domain prefix'
+    Value: !Ref UserPoolDomainName
+  UserPoolId:
+    Description: 'The Cognito User Pool ID'
+    Value: !GetAtt 
+      - ServiceStack
+      - Outputs.UserPoolId
+  UserClientId:
+    Description: 'The Cognito App Client ID'
+    Value: !GetAtt 
+      - ServiceStack
+      - Outputs.UserClientId
+  AdminAPI:
+    Description: 'The Admin API ID'
+    Value: !GetAtt 
+      - AdminApiStack
+      - Outputs.AdminAPI
+  CustomerAPI:
+    Description: 'The Customer API ID'
+    Value: !GetAtt 
+      - CustomerApiStack
+      - Outputs.CustomerAPI
+  VehicleAPI:
+    Description: 'The Vehicle API ID'
+    Value: !GetAtt 
+      - VehicleApiStack
+      - Outputs.VehicleAPI
