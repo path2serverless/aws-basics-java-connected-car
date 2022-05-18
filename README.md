@@ -72,71 +72,75 @@ CodePipeline
 
 ## Repository Contents
 
-### [.vscode](https://github.com/path2serverless/aws-basics-dotnet-connected-car/tree/main/.vscode)
+### [.vscode](https://github.com/path2serverless/aws-basics-java-connected-car/tree/main/.vscode)
 
 Task and launch files to assist development with VS Code
 
-### [buildspec](https://github.com/path2serverless/aws-basics-dotnet-connected-car/tree/main/buildspec)
+### [buildspec](https://github.com/path2serverless/aws-basics-java-connected-car/tree/main/buildspec)
 
 AWS CodeProject buildspec files for each of the three deployment architectures, plus an additional buildspec file for automated API testing. These files are used by the pipeline that's described below.
 
-### [deployment](https://github.com/path2serverless/aws-basics-dotnet-connected-car/tree/main/deployment)
+### [cloudwatch](https://github.com/path2serverless/aws-basics-java-connected-car/tree/main/cloudwatch)
+
+Example scripts for querying cloudwatch logs and metrics.
+
+### [deployment](https://github.com/path2serverless/aws-basics-java-connected-car/tree/main/deployment)
 
 Parent for the three sets of deployment folders, each containing manual deployment scripts for zsh and powershell, as well as CloudFormation templates and where applicable, OpenApi documents. Individual deployment folders are listed below.
 
-### [deployment/containers](https://github.com/path2serverless/aws-basics-dotnet-connected-car/tree/main/deployment/containers)
+### [deployment/containers](https://github.com/path2serverless/aws-basics-java-connected-car/tree/main/deployment/containers)
 
 Contains the deployment files for the Fargate-provisioned containerized version of the solution.
 
-### [deployment/openapi](https://github.com/path2serverless/aws-basics-dotnet-connected-car/tree/main/deployment/openapi)
+### [deployment/openapi](https://github.com/path2serverless/aws-basics-java-connected-car/tree/main/deployment/openapi)
 
 Contains the deployment files for the OpenApi-defined version of the solution.
 
-### [deployment/sam](https://github.com/path2serverless/aws-basics-dotnet-connected-car/tree/main/deployment/sam)
+### [deployment/sam](https://github.com/path2serverless/aws-basics-java-connected-car/tree/main/deployment/sam)
 
 Contains the deployment files for the basic serverless-application-model version of the solution.
 
-### [main](https://github.com/path2serverless/aws-basics-dotnet-connected-car/tree/main/main)
+### [main](https://github.com/path2serverless/aws-basics-java-connected-car/tree/main/main)
 
 The parent folder for the java source code which is a multi-module maven project. Details about each of the modules follows below.
 
-### [main/apis](https://github.com/path2serverless/aws-basics-dotnet-connected-car/tree/main/main/apis)
+### [main/apis](https://github.com/path2serverless/aws-basics-java-connected-car/tree/main/main/apis)
 
 Contains the JAX-RS APIs and Grizzly HTTP server for the containerized version of the solution.
 
-### [main/authorizers](https://github.com/path2serverless/aws-basics-dotnet-connected-car/tree/main/main/authorizers)
+### [main/authorizers](https://github.com/path2serverless/aws-basics-java-connected-car/tree/main/main/authorizers)
 
 Contains the Lambda that implements the custom VIN/Pin Number authorizer.
 
-### [main/events](https://github.com/path2serverless/aws-basics-dotnet-connected-car/tree/main/main/events)
+### [main/events](https://github.com/path2serverless/aws-basics-java-connected-car/tree/main/main/events)
 
 Contains the Lambda that's triggered by the SQS endpoint used for creating Cognito users in the containerized version of the solution.
 
-### [main/functions](https://github.com/path2serverless/aws-basics-dotnet-connected-car/tree/main/main/functions)
+### [main/functions](https://github.com/path2serverless/aws-basics-java-connected-car/tree/main/main/functions)
 
 Contains the Lambdas that back the APIs for the SAM and OpenApi versions of the solution.
 
-### [main/services](https://github.com/path2serverless/aws-basics-dotnet-connected-car/tree/main/main/services)
+### [main/services](https://github.com/path2serverless/aws-basics-java-connected-car/tree/main/main/services)
 
 Contains the implementations for the service components that are invoked by the Lambdas and JAX-RS API resources.
 
-### [main/shared](https://github.com/path2serverless/aws-basics-dotnet-connected-car/tree/main/main/shared)
+### [main/shared](https://github.com/path2serverless/aws-basics-java-connected-car/tree/main/main/shared)
 
 Contains the classes for the API inputs/outputs and the service interfaces for the solution.
 
-### [main/test](https://github.com/path2serverless/aws-basics-dotnet-connected-car/tree/main/main/test)
+### [main/test](https://github.com/path2serverless/aws-basics-java-connected-car/tree/main/main/test)
 
 Contains example component tests for the Lambdas and JAX-RS resources.
 
-### [main/tools](https://github.com/path2serverless/aws-basics-dotnet-connected-car/tree/main/main/tools)
+### [main/tools](https://github.com/path2serverless/aws-basics-java-connected-car/tree/main/main/tools)
 
 Contains command-line tools that can be used to seed performance-testing data in the database.
 
-### [pipeline](https://github.com/path2serverless/aws-basics-dotnet-connected-car/tree/main/pipeline)
+### [pipeline](https://github.com/path2serverless/aws-basics-java-connected-car/tree/main/pipeline)
 
 Contains scripts (zsh and powershell versions) and CloudFormation template that defines a CodePipeline process for the solution.
 
-### [postman](https://github.com/path2serverless/aws-basics-dotnet-connected-car/tree/main/postman)
+### [postman](https://github.com/path2serverless/aws-basics-java-connected-car/tree/main/postman)
 
 Contains Postman test collections for each of the three APIs and a global variables definition file.
 
