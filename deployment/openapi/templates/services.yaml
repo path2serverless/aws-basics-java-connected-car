@@ -63,7 +63,7 @@ Resources:
   DealerTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
-      TableName: !Sub '${ServiceName}_Dealer_${EnvironmentName}'
+      TableName: !Sub '${ServiceName}_Dealer_Table_${EnvironmentName}'
       AttributeDefinitions:
         - AttributeName: dealerId
           AttributeType: S
@@ -74,7 +74,7 @@ Resources:
   TimeslotTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
-      TableName: !Sub '${ServiceName}_Timeslot_${EnvironmentName}'
+      TableName: !Sub '${ServiceName}_Timeslot_Table_${EnvironmentName}'
       AttributeDefinitions:
         - AttributeName: dealerId
           AttributeType: S
@@ -89,7 +89,7 @@ Resources:
   AppointmentTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
-      TableName: !Sub '${ServiceName}_Appointment_${EnvironmentName}'
+      TableName: !Sub '${ServiceName}_Appointment_Table_${EnvironmentName}'
       AttributeDefinitions:
         - AttributeName: appointmentId
           AttributeType: S
@@ -121,7 +121,7 @@ Resources:
   RegistrationTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
-      TableName: !Sub '${ServiceName}_Registration_${EnvironmentName}'
+      TableName: !Sub '${ServiceName}_Registration_Table_${EnvironmentName}'
       AttributeDefinitions:
         - AttributeName: username
           AttributeType: S
@@ -145,7 +145,7 @@ Resources:
   CustomerTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
-      TableName: !Sub '${ServiceName}_Customer_${EnvironmentName}'
+      TableName: !Sub '${ServiceName}_Customer_Table_${EnvironmentName}'
       AttributeDefinitions:
         - AttributeName: username
           AttributeType: S
@@ -156,7 +156,7 @@ Resources:
   VehicleTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
-      TableName: !Sub '${ServiceName}_Vehicle_${EnvironmentName}'
+      TableName: !Sub '${ServiceName}_Vehicle_Table_${EnvironmentName}'
       AttributeDefinitions:
         - AttributeName: vin
           AttributeType: S
@@ -167,7 +167,7 @@ Resources:
   EventTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
-      TableName: !Sub '${ServiceName}_Event_${EnvironmentName}'
+      TableName: !Sub '${ServiceName}_Event_Table_${EnvironmentName}'
       AttributeDefinitions:
         - AttributeName: vin
           AttributeType: S
@@ -233,8 +233,8 @@ Resources:
               - !GetAtt 
                 - EventTable
                 - Arn
-              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ServiceName}_Appointment_${EnvironmentName}/index/*'
-              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ServiceName}_Registration_${EnvironmentName}/index/*'
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ServiceName}_Appointment_Table_${EnvironmentName}/index/*'
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${ServiceName}_Registration_Table_${EnvironmentName}/index/*'
     DependsOn:
       - DealerTable
       - TimeslotTable

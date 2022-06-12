@@ -47,13 +47,13 @@ Globals:
     Tracing: Active
     Environment:
       Variables:
-        DealerTableName: !Sub '${ServiceName}_Dealer_${EnvironmentName}'
-        TimeslotTableName: !Sub '${ServiceName}_Timeslot_${EnvironmentName}'
-        AppointmentTableName: !Sub '${ServiceName}_Appointment_${EnvironmentName}'
-        RegistrationTableName: !Sub '${ServiceName}_Registration_${EnvironmentName}'
-        CustomerTableName: !Sub '${ServiceName}_Customer_${EnvironmentName}'
-        VehicleTableName: !Sub '${ServiceName}_Vehicle_${EnvironmentName}'
-        EventTableName: !Sub '${ServiceName}_Event_${EnvironmentName}'
+        DealerTableName: !Sub '${ServiceName}_Dealer_Table_${EnvironmentName}'
+        TimeslotTableName: !Sub '${ServiceName}_Timeslot_Table_${EnvironmentName}'
+        AppointmentTableName: !Sub '${ServiceName}_Appointment_Table_${EnvironmentName}'
+        RegistrationTableName: !Sub '${ServiceName}_Registration_Table_${EnvironmentName}'
+        CustomerTableName: !Sub '${ServiceName}_Customer_Table_${EnvironmentName}'
+        VehicleTableName: !Sub '${ServiceName}_Vehicle_Table_${EnvironmentName}'
+        EventTableName: !Sub '${ServiceName}_Event_Table_${EnvironmentName}'
 Conditions:
   IsDevelopment: !Equals [ !Ref EnvironmentName, Dev]
 Resources:
