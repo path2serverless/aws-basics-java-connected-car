@@ -2,7 +2,7 @@
 service="ConnectedCar"
 environment="Dev"
 
-start=$(date -u -v-15M +"%Y-%m-%dT%H:%M:%S")
+start=$(date -u -v-30M +"%Y-%m-%dT%H:%M:%S")
 end=$(date -u +"%Y-%m-%dT%H:%M:%S")
 
 dimensions="Name=FunctionName,Value=${service}_Admin_GetDealers_${environment}"
