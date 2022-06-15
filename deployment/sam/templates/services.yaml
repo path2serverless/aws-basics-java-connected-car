@@ -45,7 +45,7 @@ Resources:
       ExplicitAuthFlows:
         - ALLOW_ADMIN_USER_PASSWORD_AUTH 
         - ALLOW_REFRESH_TOKEN_AUTH
-      GenerateSecret: !If [ IsDevelopment, false, true ]
+      GenerateSecret: true
       IdTokenValidity: 30
       RefreshTokenValidity: 300
       SupportedIdentityProviders:
