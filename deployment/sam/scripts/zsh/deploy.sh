@@ -56,6 +56,11 @@ echo "*       Executing update stack and waiting for results      *"
 echo "*************************************************************"
 echo " "
 
+domain=$(aws cloudformation describe-stacks \
+    --stack-name ${service}${environment} \
+    --query "Stacks[0].Outputs[?OutputKey=='UserPoolDomainName'].OutputValue" \
+    --output text)
+
 aws cloudformation update-stack \
     --stack-name ${service}${environment} \
     --template-body file://${workspacePath}/deployment/sam/templates/master.yaml \

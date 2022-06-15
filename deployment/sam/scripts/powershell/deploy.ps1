@@ -64,6 +64,10 @@ else {
   Write-Host "*************************************************************"
   Write-Host " "
 
+  $domain = ((Get-CFNStack `
+      -StackName "${service}${environment}").Outputs `
+      | Where-Object {$_.OutputKey -EQ 'UserPoolDomainName'}).OutputValue
+
   Update-CFNStack `
       -Region ${region} `
       -StackName "${service}${environment}" `
