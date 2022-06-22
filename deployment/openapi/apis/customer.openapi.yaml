@@ -70,7 +70,7 @@ paths:
         in: "path"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/Guid' 
       security:
       - CognitoAuthorizer:
         - aws.cognito.signin.user.admin
@@ -89,7 +89,7 @@ paths:
         in: "path"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/Guid' 
       responses:
         '200':
           description: An individual appointment
@@ -137,7 +137,7 @@ paths:
         in: "path"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/AlphaNumeric' 
       responses:
         '200':
           description: A list of appointments by vehicle vin
@@ -164,7 +164,7 @@ paths:
         in: "path"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/AlphaNumeric' 
       responses:
         '200':
           description: An individual vehicle by vin
@@ -191,7 +191,7 @@ paths:
         in: "path"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/AlphaNumeric' 
       responses:
         '200':
           description: A list of events for a vehicle vin
@@ -218,7 +218,7 @@ paths:
         in: "query"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/StateCode' 
       responses:
         '200':
           description: A list of dealers by stateCode
@@ -245,7 +245,7 @@ paths:
         in: "path"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/Guid' 
       responses:
         '200':
           description: A list of timeslots for a dealer

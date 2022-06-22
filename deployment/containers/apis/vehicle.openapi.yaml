@@ -48,7 +48,7 @@ paths:
         in: "path"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/Timestamp' 
       responses:
         '200':
           description: An individual event

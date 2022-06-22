@@ -19,6 +19,9 @@
     PinNumber:
       type: string
       pattern: '^\d{6}$'
+    Date:
+      type: string
+      format: date
     DateTime:
       type: string
       format: date-time

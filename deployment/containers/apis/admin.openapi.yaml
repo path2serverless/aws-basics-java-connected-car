@@ -33,7 +33,7 @@ paths:
         in: "query"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/StateCode' 
       responses:
         '200':
           description: A list of dealers by stateCode
@@ -59,7 +59,7 @@ paths:
         in: "path"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/Guid' 
       responses:
         '200':
           description: An individual dealer by dealerId
@@ -87,7 +87,7 @@ paths:
         in: "path"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/Guid' 
       requestBody:
         required: true
         content:
@@ -113,17 +113,17 @@ paths:
         in: "query"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/Date' 
       - name: "endDate"
         in: "query"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/Date' 
       - name: "dealerId"
         in: "path"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/Guid' 
       responses:
         '200':
           description: A list of timeslots for a dealer
@@ -151,12 +151,12 @@ paths:
         in: "path"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/Guid' 
       - name: "serviceDateHour"
         in: "path"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/ServiceDateHour' 
       responses:
         '200':
           description: An individual timeslot
@@ -202,7 +202,7 @@ paths:
       - name: "lastname"
         in: "query"
         schema:
-          type: "string"
+          $ref: '#/components/schemas/Text' 
       responses:
         '200':
           description: A list of customers by lastname
@@ -228,7 +228,7 @@ paths:
         in: "path"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/AlphaNumeric' 
       responses:
         '200':
           description: An individual customer by username
@@ -262,7 +262,7 @@ paths:
         in: "path"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/AlphaNumeric' 
       security:
       - api_key: []
       x-amazon-apigateway-integration:
@@ -288,7 +288,7 @@ paths:
         in: "path"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/AlphaNumeric' 
       security:
       - api_key: []
       x-amazon-apigateway-integration:
@@ -308,7 +308,7 @@ paths:
         in: "path"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/AlphaNumeric' 
       responses:
         '200':
           description: A list of vehicle registrations for a customer
@@ -336,12 +336,12 @@ paths:
         in: "path"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/AlphaNumeric' 
       - name: "vin"
         in: "path"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/AlphaNumeric' 
       responses:
         '200':
           description: An individual registration
@@ -389,7 +389,7 @@ paths:
         in: "path"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/AlphaNumeric' 
       responses:
         '200':
           description: An individual vehicle by vin
@@ -417,7 +417,7 @@ paths:
         in: "path"
         required: true
         schema:
-          type: "string"
+          $ref: '#/components/schemas/AlphaNumeric' 
       responses:
         '200':
           description: A list of registrations for a vehicle
