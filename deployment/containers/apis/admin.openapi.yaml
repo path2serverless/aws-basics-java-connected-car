@@ -26,7 +26,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: http://${NetworkLoadBalancerDns}/admin/dealers
-        passthroughBehavior: "when_no_match"
     get: # get dealers
       parameters:
       - name: "stateCode"
@@ -51,7 +50,6 @@ paths:
         httpMethod: "GET"
         uri: 
           Fn::Sub: http://${NetworkLoadBalancerDns}/admin/dealers
-        passthroughBehavior: "when_no_match"
   /admin/dealers/{dealerId}:
     get: # get dealer
       parameters:
@@ -79,7 +77,6 @@ paths:
           integration.request.path.dealerId: "method.request.path.dealerId"
         uri: 
           Fn::Sub: http://${NetworkLoadBalancerDns}/admin/dealers/{dealerId}
-        passthroughBehavior: "when_no_match"
   /admin/dealers/{dealerId}/timeslots:
     post: # create timeslot
       parameters:
@@ -106,7 +103,6 @@ paths:
           integration.request.path.dealerId: "method.request.path.dealerId"
         uri: 
           Fn::Sub: http://${NetworkLoadBalancerDns}/admin/dealers/{dealerId}/timeslots
-        passthroughBehavior: "when_no_match"
     get: # get timeslots
       parameters:
       - name: "startDate"
@@ -143,7 +139,6 @@ paths:
           integration.request.path.dealerId: "method.request.path.dealerId"
         uri: 
           Fn::Sub: http://${NetworkLoadBalancerDns}/admin/dealers/{dealerId}/timeslots
-        passthroughBehavior: "when_no_match"
   /admin/dealers/{dealerId}/timeslots/{serviceDateHour}:
     get: # get timeslot
       parameters:
@@ -177,7 +172,6 @@ paths:
           integration.request.path.serviceDateHour: "method.request.path.serviceDateHour"
         uri: 
           Fn::Sub: http://${NetworkLoadBalancerDns}/admin/dealers/{dealerId}/timeslots/{serviceDateHour}
-        passthroughBehavior: "when_no_match"
   /admin/customers:
     post: # create customer
       requestBody:
@@ -196,7 +190,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: http://${NetworkLoadBalancerDns}/admin/customers
-        passthroughBehavior: "when_no_match"
     get: # get customers
       parameters:
       - name: "lastname"
@@ -220,7 +213,6 @@ paths:
         httpMethod: "GET"
         uri: 
           Fn::Sub: http://${NetworkLoadBalancerDns}/admin/customers
-        passthroughBehavior: "when_no_match"
   /admin/customers/{username}:
     get: # get customer
       parameters:
@@ -248,7 +240,6 @@ paths:
           integration.request.path.username: "method.request.path.username"
         uri: 
           Fn::Sub: http://${NetworkLoadBalancerDns}/admin/customers/{username}
-        passthroughBehavior: "when_no_match"
   /admin/customers/{username}/registrations:
     post: # create registration
       requestBody:
@@ -275,7 +266,6 @@ paths:
           integration.request.path.username: "method.request.path.username"
         uri: 
           Fn::Sub: http://${NetworkLoadBalancerDns}/admin/customers/{username}/registrations
-        passthroughBehavior: "when_no_match"
     patch: # update registration
       requestBody:
         required: true
@@ -301,7 +291,6 @@ paths:
           integration.request.path.username: "method.request.path.username"
         uri: 
           Fn::Sub: http://${NetworkLoadBalancerDns}/admin/customers/{username}/registrations
-        passthroughBehavior: "when_no_match"
     get: # get registrations
       parameters:
       - name: "username"
@@ -328,7 +317,6 @@ paths:
           integration.request.path.username: "method.request.path.username"
         uri: 
           Fn::Sub: http://${NetworkLoadBalancerDns}/admin/customers/{username}/registrations
-        passthroughBehavior: "when_no_match"
   /admin/customers/{username}/registrations/{vin}:
     get: # get registration
       parameters:
@@ -362,7 +350,6 @@ paths:
           integration.request.path.vin: "method.request.path.vin"
         uri: 
           Fn::Sub: http://${NetworkLoadBalancerDns}/admin/customers/{username}/registrations/{vin}
-        passthroughBehavior: "when_no_match"
   /admin/vehicles:
     post: # create vehicle
       requestBody:
@@ -381,7 +368,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: http://${NetworkLoadBalancerDns}/admin/vehicles
-        passthroughBehavior: "when_no_match"
   /admin/vehicles/{vin}:
     get: # get vehicle
       parameters:
@@ -409,7 +395,6 @@ paths:
           integration.request.path.vin: "method.request.path.vin"
         uri: 
           Fn::Sub: http://${NetworkLoadBalancerDns}/admin/vehicles/{vin}
-        passthroughBehavior: "when_no_match"
   /admin/vehicles/{vin}/registrations:
     get: # get vehicle registrations
       parameters:
@@ -437,7 +422,6 @@ paths:
           integration.request.path.vin: "method.request.path.vin"
         uri: 
           Fn::Sub: http://${NetworkLoadBalancerDns}/admin/vehicles/{vin}/registrations
-        passthroughBehavior: "when_no_match"
 components:
   securitySchemes:
     api_key:

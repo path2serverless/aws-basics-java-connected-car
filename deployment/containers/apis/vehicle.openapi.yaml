@@ -21,7 +21,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: http://${NetworkLoadBalancerDns}/vehicle/events
-        passthroughBehavior: "when_no_match"
     get: # get events
       responses:
         '200':
@@ -40,7 +39,6 @@ paths:
         httpMethod: "GET"
         uri: 
           Fn::Sub: http://${NetworkLoadBalancerDns}/vehicle/events
-        passthroughBehavior: "when_no_match"
   /vehicle/events/{timestamp}:
     get: # get event
       parameters:
@@ -68,7 +66,6 @@ paths:
           integration.request.path.timestamp: "method.request.path.timestamp"
         uri: 
           Fn::Sub: http://${NetworkLoadBalancerDns}/vehicle/events/{timestamp}
-        passthroughBehavior: "when_no_match"
 components:
   securitySchemes:
     VehicleAuthorizer:
