@@ -10,7 +10,7 @@ fi
 
 deployment="$1"
 
-workspacePath="[enter base path]/ref-aws-java-connected-car"
+workspacePath="[enter base path]/aws-basics-java-connected-car"
 zip="connectedcar.zip"
 bucket="[enter bucket name]"
 service="ConnectedCar"

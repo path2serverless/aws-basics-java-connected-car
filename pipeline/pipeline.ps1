@@ -10,7 +10,7 @@ elseif (("${deployment}" -ne "sam") -and ("${deployment}" -ne "openapi") -and ("
     return
 }
 
-$workspacePath="[enter base path]/ref-aws-java-connected-car"
+$workspacePath="[enter base path]/aws-basics-java-connected-car"
 $zip="connectedcar.zip"
 $bucket="[enter bucket name]"
 $service="ConnectedCar"

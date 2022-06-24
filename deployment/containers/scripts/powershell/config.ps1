@@ -3,7 +3,7 @@ Import-Module AWSPowerShell.NetCore
 
 $ErrorActionPreference = "Stop"
 
-$workspacePath="[enter base path]/ref-aws-java-connected-car"
+$workspacePath="[enter base path]/aws-basics-java-connected-car"
 $bucket="[enter bucket name]"
 $service="ConnectedCar"
 $serviceLower="connectedcar"
