@@ -19,7 +19,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${UpdateCustomer.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         type: "aws_proxy"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
@@ -39,7 +38,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetCustomer.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         type: "aws_proxy"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
@@ -59,7 +57,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateAppointment.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         type: "aws_proxy"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
@@ -79,7 +76,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteAppointment.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         type: "aws_proxy"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
@@ -105,7 +101,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetAppointment.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         type: "aws_proxy"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
@@ -126,7 +121,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetRegistrations.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         type: "aws_proxy"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
@@ -153,7 +147,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetAppointments.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         type: "aws_proxy"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
@@ -180,7 +173,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetVehicle.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         type: "aws_proxy"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
@@ -207,7 +199,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetEvents.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         type: "aws_proxy"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
@@ -234,7 +225,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetDealers.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         type: "aws_proxy"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
@@ -261,7 +251,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetTimeslots.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         type: "aws_proxy"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}

@@ -23,7 +23,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateDealer.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
     get: # get dealers
@@ -47,7 +46,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetDealers.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
   /admin/dealers/{dealerId}:
@@ -72,7 +70,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetDealer.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
   /admin/dealers/{dealerId}/timeslots:
@@ -96,7 +93,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateTimeslot.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
     get: # get timeslots
@@ -130,7 +126,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetTimeslots.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
   /admin/dealers/{dealerId}/timeslots/{serviceDateHour}:
@@ -160,7 +155,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetTimeslot.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
   /admin/customers:
@@ -178,7 +172,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateCustomer.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
     get: # get customers
@@ -201,7 +194,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetCustomers.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
   /admin/customers/{username}:
@@ -226,7 +218,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetCustomer.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
   /admin/customers/{username}/registrations:
@@ -250,7 +241,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateRegistration.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
     patch: # update registration
@@ -273,7 +263,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${UpdateRegistration.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
     get: # get registrations
@@ -297,7 +286,6 @@ paths:
         httpMethod: "POST"
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetCustomerRegistrations.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
   /admin/customers/{username}/registrations/{vin}:
@@ -327,7 +315,6 @@ paths:
         httpMethod: "POST"
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetRegistration.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
   /admin/vehicles:
@@ -345,7 +332,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateVehicle.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
   /admin/vehicles/{vin}:
@@ -370,7 +356,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetVehicle.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
   /admin/vehicles/{vin}/registrations:
@@ -395,7 +380,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetVehicleRegistrations.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
 components:

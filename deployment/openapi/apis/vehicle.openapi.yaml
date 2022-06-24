@@ -17,7 +17,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateEvent.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         type: "aws_proxy"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
@@ -35,7 +34,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetEvents.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         type: "aws_proxy"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
@@ -60,7 +58,6 @@ paths:
         httpMethod: "POST"
         uri: 
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetEvent.Arn}:${StageName}/invocations
-        passthroughBehavior: "when_no_match"
         type: "aws_proxy"
         credentials: 
           Fn::Sub: ${LambdaInvocationRole}
