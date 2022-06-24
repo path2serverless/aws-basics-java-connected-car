@@ -3,6 +3,7 @@
 service="ConnectedCar"
 environment="Dev"
 region=$(aws configure get region)
+stage="api"
 
 domain=$(aws cloudformation describe-stacks \
     --stack-name ${service}${environment} \
@@ -25,8 +26,13 @@ clientSecret=$(aws cognito-idp describe-user-pool-client \
     --query 'UserPoolClient.ClientSecret' \
     --output text)
 
+adminApi=$(aws cloudformation describe-stacks \
+    --stack-name ${service}${environment} \
+    --query "Stacks[0].Outputs[?OutputKey=='AdminAPI'].OutputValue" \
+    --output text)
+
 apiKey=$(aws apigateway get-api-keys \
-    --query 'items[?contains(name,`Admin`)==`true`].value' \
+    --query "items[?contains(stageKeys,\`${adminApi}/${stage}\`)==\`true\`].value" \
     --include-values \
     --output text)
 

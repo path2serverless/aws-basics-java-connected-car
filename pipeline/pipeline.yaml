@@ -221,7 +221,7 @@ Resources:
           - Name: ENVIRONMENT
             Type: PLAINTEXT
             Value: !Ref EnvironmentName
-          - Name: STAGE_NAME
+          - Name: STAGE
             Type: PLAINTEXT
             Value: !Ref StageName
       Source:
