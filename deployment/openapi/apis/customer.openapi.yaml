@@ -2,6 +2,11 @@ openapi: "3.0.1"
 info:
   title: "ConnectedCar_Customer_API"
   version: "1.0"
+x-amazon-apigateway-request-validators:
+  all:
+    validateRequestBody: true
+    validateRequestParameters: true 
+x-amazon-apigateway-request-validator: all
 paths:
   /customer/profile:
     patch: # update customer
