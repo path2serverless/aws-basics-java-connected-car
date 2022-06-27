@@ -22,6 +22,10 @@ $clientSecret = (Get-CGIPUserPoolClient `
     -UserPoolId $userPoolId `
     -ClientId $clientId).ClientSecret
 
+$callbackUrl = (Get-CGIPUserPoolClient `
+    -UserPoolId $userPoolId `
+    -ClientId $clientId).CallbackURLs[0]
+
 $adminApi = ((Get-CFNStack `
     -StackName "${service}${environment}").Outputs `
     | Where-Object {$_.OutputKey -EQ 'AdminAPI'}).OutputValue
@@ -32,7 +36,14 @@ $apiKey = (Get-AGApiKeyList `
 
 $apiKeyValue = (Get-AGApiKey -ApiKey $apiKey -IncludeValue 1).Value
 
-Write-Host "Cognito Auth URL: ${domain}.auth.${region}.amazoncognito.com/login"
+Write-Host " "
+Write-Host "Cognito Callback URL: ${callbackUrl}"
+Write-Host " "
+
+Write-Host "Cognito Auth URL: https://${domain}.auth.${region}.amazoncognito.com/login"
+Write-Host " "
+
+Write-Host "Cognito Token URL: https://${domain}.auth.${region}.amazoncognito.com/oauth2/token"
 Write-Host " "
 
 Write-Host "ClientId: ${clientId}"

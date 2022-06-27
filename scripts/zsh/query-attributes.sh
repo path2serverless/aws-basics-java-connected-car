@@ -26,6 +26,12 @@ clientSecret=$(aws cognito-idp describe-user-pool-client \
     --query 'UserPoolClient.ClientSecret' \
     --output text)
 
+callbackUrl=$(aws cognito-idp describe-user-pool-client \
+    --user-pool-id $userPoolId \
+    --client-id $clientId \
+    --query 'UserPoolClient.CallbackURLs[0]' \
+    --output text)
+
 adminApi=$(aws cloudformation describe-stacks \
     --stack-name ${service}${environment} \
     --query "Stacks[0].Outputs[?OutputKey=='AdminAPI'].OutputValue" \
@@ -36,7 +42,14 @@ apiKey=$(aws apigateway get-api-keys \
     --include-values \
     --output text)
 
-echo "Cognito Auth URL: ${domain}.auth.${region}.amazoncognito.com/login"
+echo " "
+echo "Cognito Callback URL: ${callbackUrl}"
+echo " "
+
+echo "Cognito Auth URL: https://${domain}.auth.${region}.amazoncognito.com/login"
+echo " "
+
+echo "Cognito Token URL: https://${domain}.auth.${region}.amazoncognito.com/oauth2/token"
 echo " "
 
 echo "ClientId: ${clientId}"
