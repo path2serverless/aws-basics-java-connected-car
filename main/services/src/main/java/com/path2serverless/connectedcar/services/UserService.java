@@ -6,19 +6,8 @@ import com.path2serverless.connectedcar.services.translator.ITranslator;
 import com.path2serverless.connectedcar.shared.data.User;
 import com.path2serverless.connectedcar.shared.services.IUserService;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-
 import com.amazonaws.services.cognitoidp.model.AdminCreateUserRequest;
-import com.amazonaws.services.cognitoidp.model.AdminInitiateAuthRequest;
-import com.amazonaws.services.cognitoidp.model.AdminInitiateAuthResult;
 import com.amazonaws.services.cognitoidp.model.AdminSetUserPasswordRequest;
-import com.amazonaws.services.cognitoidp.model.AuthFlowType;
 import com.amazonaws.services.cognitoidp.model.DeliveryMediumType;
 
 public class UserService extends BaseService implements IUserService {
